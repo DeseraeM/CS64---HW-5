@@ -22,7 +22,7 @@ string disassemble( string hex ) {
     // YOUR CODE GOES HERE!!
 
    
-   int v[] = {0b1000, 0b1001,0b1100, 0b1101, 0b1010, 0b1011}; 
+   int v[] = {0b001000, 0b001001,0b001100, 0b001101, 0b001010, 0b001011}; 
    string names[] = {"addi", "addiu", "andi", "ori", "slti", "sltiu"};
 
 
@@ -45,23 +45,22 @@ string disassemble( string hex ) {
     int mask2 =  0b00000000000111110000000000000000; //rt
     int mask3 = 0b0000000000000000111111111111111; //immedaite 
 
-    int rs = ( hex1 & mask1) >> 21;
+    int rs = (hex1 & mask1) >> 21;
     int rt = (hex1 & mask2) >> 16;
     int immd = (hex1 & mask3) >> 0;
-
+    
     int mask_bin = 0b1000000000000000;
-    int immd2 = (immd & mask_bin) >>15;
-    if(immd2 == 1){
-        if( opcode == "slti" ||opcode == "addi"){
-            immd = immd - (1<<16);
+    int immd2 = (immd & mask_bin) >> 15;
+    if (immd2 == 1){
+        //int mask_r = 0b00000000000000000000000000000000;
+        //immd = (immd ^ mask_r) + 1;
+        if (opcode == "slti" || opcode ==  "addi") {
+            immd = immd - (1 << 16);
         }
     }
 
     int d[] = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}; 
     string labels[] = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7","$s0","$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7" };
-
-    //int save[] = {16, 17, 18, 19, 20, 21, 22, 23};
-   // string temp[] = {"$s0","$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7"};
 
     for ( int j =0; j < 16; j++){
         if (rs == d[j]){
@@ -70,13 +69,10 @@ string disassemble( string hex ) {
         if (rt == d[j]){
             dosReg = labels[j];
         }
-        return oneReg + dosReg;
     }
     
  
-    return opcode + " " + dosReg + ", " + oneReg + ", " + to_string(immd); 
-    //return immd;
-      // remove stub and replace it with correct variable
+    return opcode + " " + dosReg +  ", " + oneReg + ", " + to_string(immd);
 }
 
 int main() {
