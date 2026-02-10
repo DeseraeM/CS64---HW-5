@@ -55,7 +55,7 @@ string disassemble( string hex ) {
     int mask_bin = 0b1000000000000000;
     int immd2 = (immd & mask_bin) >> 15;
     if (immd2 == 1){
-      if (opcode == "slti" || opcode ==  "addi") {
+      if (opcode == "slti" || opcode ==  "addi" || opcode == "addiu") {
         immd = immd - (1 << 16);
         }
     }
