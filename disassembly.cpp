@@ -74,11 +74,7 @@ string disassemble( string hex ) {
         }
     }
     
-    if (immd2 == 1){
-        return opcode + " " + dosReg +  ", " + oneReg + ", " + "-" + to_string(immd);
-    }else{
         return opcode + " " + dosReg +  ", " + oneReg + ", " + to_string(immd);
-    }
 }
 
 int main() {
