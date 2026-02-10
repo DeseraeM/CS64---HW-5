@@ -27,7 +27,7 @@ string disassemble( string hex ) {
 
 
     int maskO= 0b11111100000000000000000000000000;
-    unsigned int hex1 = stoi(hex, nullptr, 16); 
+    int hex1 = stoi(hex, nullptr, 16); 
     int op = (hex1 & maskO) >> 26;
     string opcode;
     string oneReg; 
@@ -43,24 +43,28 @@ string disassemble( string hex ) {
 
     int mask1 =  0b00000011111000000000000000000000; //rs
     int mask2 =  0b00000000000111110000000000000000; //rt
-    int mask3 = 0b0000000000000000111111111111111; //immedaite 
+    int mask3 = 0b0000000000000001111111111111111; //immedaite 
 
-    int rs = (hex1 & mask1) >> 21;
+    int rs = ( hex1 & mask1) >> 21;
     int rt = (hex1 & mask2) >> 16;
     int immd = (hex1 & mask3) >> 0;
+    //cout << rs << endl;
+    //cout <<rt << endl;
+    //cout << immd << endl;
     
     int mask_bin = 0b1000000000000000;
-    int immd2 = (immd & mask_bin) >> 15;
+    int immd2 = (immd & mask_bin) >> 14;
+    cout << immd2 << endl;
     if (immd2 == 1){
-        //int mask_r = 0b00000000000000000000000000000000;
-        //immd = (immd ^ mask_r) + 1;
-        if (opcode == "slti" || opcode ==  "addi") {
-            immd = immd - (1 << 16);
+      if (opcode == "slti" || opcode ==  "addi") {
+        immd = immd - (1 << 16);
         }
     }
 
     int d[] = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}; 
     string labels[] = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7","$s0","$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7" };
+
+
 
     for ( int j =0; j < 16; j++){
         if (rs == d[j]){
@@ -71,8 +75,11 @@ string disassemble( string hex ) {
         }
     }
     
- 
-    return opcode + " " + dosReg +  ", " + oneReg + ", " + to_string(immd);
+    if (immd2 == 1){
+        return opcode + " " + dosReg +  ", " + oneReg + ", " + "-" + to_string(immd);
+    }else{
+        return opcode + " " + dosReg +  ", " + oneReg + ", " + to_string(immd);
+    }
 }
 
 int main() {
